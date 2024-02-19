@@ -87,6 +87,7 @@ module.exports = {
       files: [
         'packages/**/src/__tests__/**',
         'packages/lexical-playground/**',
+        'packages/tt-lexical/**',
         'packages/lexical-devtools/**',
       ],
       rules: {
