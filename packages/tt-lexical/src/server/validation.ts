@@ -10,9 +10,8 @@ import {createHeadlessEditor} from '@lexical/headless';
 import {$isMarkNode, $unwrapMarkNode} from '@lexical/mark';
 import * as http from 'http';
 import {$getRoot, $isElementNode, LexicalNode} from 'lexical';
+import PlaygroundNodes from 'lexical-playground/src/nodes/PlaygroundNodes';
 import * as url from 'url';
-
-import PlaygroundNodes from '../nodes/PlaygroundNodes';
 
 const hostname = 'localhost';
 const port = 1235;
