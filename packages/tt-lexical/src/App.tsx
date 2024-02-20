@@ -17,6 +17,7 @@ import {
   useSettings,
 } from 'tt-lexical-editor/src/context/SettingsContext';
 import Editor from 'tt-lexical-editor/src/Editor';
+import Settings from 'tt-lexical-editor/src/Settings';
 
 import {isDevPlayground} from './appSettings';
 import {SharedAutocompleteContext} from './context/SharedAutocompleteContext';
@@ -28,7 +29,6 @@ import PasteLogPlugin from './plugins/PasteLogPlugin';
 import {TableContext} from './plugins/TablePlugin';
 import TestRecorderPlugin from './plugins/TestRecorderPlugin';
 import TypingPerfPlugin from './plugins/TypingPerfPlugin';
-import Settings from './Settings';
 import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
 
 console.warn(
