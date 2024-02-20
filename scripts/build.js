@@ -21,6 +21,7 @@ const extractErrorCodes = require('./error-codes/extract-errors');
 const alias = require('@rollup/plugin-alias');
 const compiler = require('@ampproject/rollup-plugin-closure-compiler');
 const {exec} = require('child-process-promise');
+const postcss = require('rollup-plugin-postcss');
 
 const license = ` * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -154,6 +155,10 @@ async function build(name, inputFile, outputPath, outputFile, isProd) {
     },
     input: inputFile,
     onwarn(warning) {
+      // skip certain warnings
+      if (warning.code === 'EVAL') {
+        return;
+      }
       if (warning.code === 'CIRCULAR_DEPENDENCY') {
         // Ignored
       } else if (warning.code === 'UNUSED_EXTERNAL_IMPORT') {
@@ -177,6 +182,9 @@ async function build(name, inputFile, outputPath, outputFile, isProd) {
       }
     },
     plugins: [
+      postcss({
+        extensions: ['.css'], // You can add other extensions if needed
+      }),
       alias({
         entries: [
           {find: 'shared', replacement: path.resolve('packages/shared/src')},
@@ -253,10 +261,14 @@ async function build(name, inputFile, outputPath, outputFile, isProd) {
     treeshake: isWWW || name !== 'Lexical Code' ? 'smallest' : undefined,
   };
   const outputOptions = {
+    ...(name.includes('Editor')
+      ? {
+          dir: outputPath, // Specify the directory here
+        }
+      : {file: outputFile}),
     esModule: false,
     exports: 'auto',
     externalLiveBindings: false,
-    file: outputFile,
     format: 'cjs', // change between es and cjs modules
     freeze: false,
     interop: false,
@@ -543,6 +555,19 @@ const packages = [
     outputPath: './packages/lexical-mark/dist/',
     packageName: 'lexical-mark',
     sourcePath: './packages/lexical-mark/src/',
+  },
+  {
+    modules: [
+      {
+        name: 'Editor',
+        outputPath: './packages/tt-lexical-editor/dist/',
+        sourceFileName: 'Editor.tsx',
+      },
+    ],
+    name: 'TT Lexical Editor',
+    outputPath: './packages/tt-lexical-editor/dist/',
+    packageName: 'tt-lexical-editor',
+    sourcePath: './packages/tt-lexical-editor/src/',
   },
   {
     modules: lexicalReactModules

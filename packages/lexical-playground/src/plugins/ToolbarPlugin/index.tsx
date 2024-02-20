@@ -76,7 +76,7 @@ import * as React from 'react';
 import {IS_APPLE} from 'shared/environment';
 
 import useModal from '../../hooks/useModal';
-import catTypingGif from '../../images/cat-typing.gif';
+// import catTypingGif from '../../images/cat-typing.gif';
 import {$createStickyNode} from '../../nodes/StickyNode';
 import DropDown, {DropDownItem} from '../../ui/DropDown';
 import DropdownColorPicker from '../../ui/DropdownColorPicker';
@@ -1070,7 +1070,7 @@ export default function ToolbarPlugin({
               onClick={() =>
                 insertGifOnClick({
                   altText: 'Cat typing on a laptop',
-                  src: catTypingGif,
+                  src: '',
                 })
               }
               className="item">
