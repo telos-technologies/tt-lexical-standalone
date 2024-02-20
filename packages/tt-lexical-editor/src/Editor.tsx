@@ -25,9 +25,9 @@ import useLexicalEditable from '@lexical/react/useLexicalEditable';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {CAN_USE_DOM} from 'shared/canUseDOM';
-import {useSettings} from 'tt-lexical/src/context/SettingsContext';
 
 import {createWebsocketProvider} from './collaboration';
+import {useSettings} from './context/SettingsContext';
 import {useSharedHistoryContext} from './context/SharedHistoryContext';
 import ActionsPlugin from './plugins/ActionsPlugin';
 import AutocompletePlugin from './plugins/AutocompletePlugin';

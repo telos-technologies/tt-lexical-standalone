@@ -12,10 +12,13 @@ import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
 import {$createParagraphNode, $createTextNode, $getRoot} from 'lexical';
 import * as React from 'react';
+import {
+  SettingsContext,
+  useSettings,
+} from 'tt-lexical-editor/src/context/SettingsContext';
 import Editor from 'tt-lexical-editor/src/Editor';
 
 import {isDevPlayground} from './appSettings';
-import {SettingsContext, useSettings} from './context/SettingsContext';
 import {SharedAutocompleteContext} from './context/SharedAutocompleteContext';
 import {SharedHistoryContext} from './context/SharedHistoryContext';
 import logo from './images/logo.svg';
