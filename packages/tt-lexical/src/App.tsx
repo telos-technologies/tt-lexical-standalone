@@ -12,16 +12,15 @@ import {LexicalComposer} from '@lexical/react/LexicalComposer';
 import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
 import {$createParagraphNode, $createTextNode, $getRoot} from 'lexical';
 import * as React from 'react';
-import {
-  SettingsContext,
-  useSettings,
-} from 'tt-lexical-editor/src/context/SettingsContext';
 import Editor from 'tt-lexical-editor/src/Editor';
-import Settings from 'tt-lexical-editor/src/Settings';
 
 import {isDevPlayground} from './appSettings';
+import {SettingsContext, useSettings} from './context/SettingsContext';
 import {SharedAutocompleteContext} from './context/SharedAutocompleteContext';
-import {SharedHistoryContext} from './context/SharedHistoryContext';
+import {
+  SharedHistoryContext,
+  useSharedHistoryContext,
+} from './context/SharedHistoryContext';
 import logo from './images/logo.svg';
 import PlaygroundNodes from './nodes/PlaygroundNodes';
 import DocsPlugin from './plugins/DocsPlugin';
@@ -29,6 +28,7 @@ import PasteLogPlugin from './plugins/PasteLogPlugin';
 import {TableContext} from './plugins/TablePlugin';
 import TestRecorderPlugin from './plugins/TestRecorderPlugin';
 import TypingPerfPlugin from './plugins/TypingPerfPlugin';
+import Settings from './Settings';
 import PlaygroundEditorTheme from './themes/PlaygroundEditorTheme';
 
 console.warn(
@@ -117,8 +117,24 @@ function prepopulatedRichText() {
 
 function App(): JSX.Element {
   const {
-    settings: {isCollab, emptyEditor, measureTypingPerf},
+    settings: {
+      isCollab,
+      emptyEditor,
+      measureTypingPerf,
+      isAutocomplete,
+      isMaxLength,
+      isCharLimit,
+      isCharLimitUtf8,
+      isRichText,
+      showTreeView,
+      showTableOfContents,
+      shouldUseLexicalContextMenu,
+      tableCellMerge,
+      tableCellBackgroundColor,
+    },
   } = useSettings();
+
+  const {historyState} = useSharedHistoryContext();
 
   const initialConfig = {
     editorState: isCollab
@@ -145,7 +161,22 @@ function App(): JSX.Element {
               </a>
             </header>
             <div className="editor-shell">
-              <Editor />
+              <Editor
+                {...{
+                  historyState,
+                  isAutocomplete,
+                  isCharLimit,
+                  isCharLimitUtf8,
+                  isCollab,
+                  isMaxLength,
+                  isRichText,
+                  shouldUseLexicalContextMenu,
+                  showTableOfContents,
+                  showTreeView,
+                  tableCellBackgroundColor,
+                  tableCellMerge,
+                }}
+              />
             </div>
             <Settings />
             {isDevPlayground ? <DocsPlugin /> : null}

@@ -14,7 +14,7 @@ import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugi
 import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import {HashtagPlugin} from '@lexical/react/LexicalHashtagPlugin';
-import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
+import {HistoryPlugin, HistoryState} from '@lexical/react/LexicalHistoryPlugin';
 import {HorizontalRulePlugin} from '@lexical/react/LexicalHorizontalRulePlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
 import {PlainTextPlugin} from '@lexical/react/LexicalPlainTextPlugin';
@@ -25,73 +25,82 @@ import useLexicalEditable from '@lexical/react/useLexicalEditable';
 import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {CAN_USE_DOM} from 'shared/canUseDOM';
-
-import {createWebsocketProvider} from './collaboration';
-import {useSettings} from './context/SettingsContext';
-import {useSharedHistoryContext} from './context/SharedHistoryContext';
-import ActionsPlugin from './plugins/ActionsPlugin';
-import AutocompletePlugin from './plugins/AutocompletePlugin';
-import AutoEmbedPlugin from './plugins/AutoEmbedPlugin';
-import AutoLinkPlugin from './plugins/AutoLinkPlugin';
-import CodeActionMenuPlugin from './plugins/CodeActionMenuPlugin';
-import CodeHighlightPlugin from './plugins/CodeHighlightPlugin';
-import CollapsiblePlugin from './plugins/CollapsiblePlugin';
-import CommentPlugin from './plugins/CommentPlugin';
-import ComponentPickerPlugin from './plugins/ComponentPickerPlugin';
-import ContextMenuPlugin from './plugins/ContextMenuPlugin';
-import DragDropPaste from './plugins/DragDropPastePlugin';
-import DraggableBlockPlugin from './plugins/DraggableBlockPlugin';
-import EmojiPickerPlugin from './plugins/EmojiPickerPlugin';
-import EmojisPlugin from './plugins/EmojisPlugin';
-import EquationsPlugin from './plugins/EquationsPlugin';
-import ExcalidrawPlugin from './plugins/ExcalidrawPlugin';
-import FigmaPlugin from './plugins/FigmaPlugin';
-import FloatingLinkEditorPlugin from './plugins/FloatingLinkEditorPlugin';
-import FloatingTextFormatToolbarPlugin from './plugins/FloatingTextFormatToolbarPlugin';
-import ImagesPlugin from './plugins/ImagesPlugin';
-import InlineImagePlugin from './plugins/InlineImagePlugin';
-import KeywordsPlugin from './plugins/KeywordsPlugin';
-import {LayoutPlugin} from './plugins/LayoutPlugin/LayoutPlugin';
-import LinkPlugin from './plugins/LinkPlugin';
-import ListMaxIndentLevelPlugin from './plugins/ListMaxIndentLevelPlugin';
-import MarkdownShortcutPlugin from './plugins/MarkdownShortcutPlugin';
-import {MaxLengthPlugin} from './plugins/MaxLengthPlugin';
-import MentionsPlugin from './plugins/MentionsPlugin';
-import PageBreakPlugin from './plugins/PageBreakPlugin';
-import PollPlugin from './plugins/PollPlugin';
-import SpeechToTextPlugin from './plugins/SpeechToTextPlugin';
-import TabFocusPlugin from './plugins/TabFocusPlugin';
-import TableCellActionMenuPlugin from './plugins/TableActionMenuPlugin';
-import TableCellResizer from './plugins/TableCellResizer';
-import TableOfContentsPlugin from './plugins/TableOfContentsPlugin';
-import ToolbarPlugin from './plugins/ToolbarPlugin';
-import TreeViewPlugin from './plugins/TreeViewPlugin';
-import TwitterPlugin from './plugins/TwitterPlugin';
-import YouTubePlugin from './plugins/YouTubePlugin';
-import ContentEditable from './ui/ContentEditable';
-import Placeholder from './ui/Placeholder';
+import {createWebsocketProvider} from 'tt-lexical/src/collaboration';
+import ActionsPlugin from 'tt-lexical/src/plugins/ActionsPlugin';
+import AutocompletePlugin from 'tt-lexical/src/plugins/AutocompletePlugin';
+import AutoEmbedPlugin from 'tt-lexical/src/plugins/AutoEmbedPlugin';
+import AutoLinkPlugin from 'tt-lexical/src/plugins/AutoLinkPlugin';
+import CodeActionMenuPlugin from 'tt-lexical/src/plugins/CodeActionMenuPlugin';
+import CodeHighlightPlugin from 'tt-lexical/src/plugins/CodeHighlightPlugin';
+import CollapsiblePlugin from 'tt-lexical/src/plugins/CollapsiblePlugin';
+import CommentPlugin from 'tt-lexical/src/plugins/CommentPlugin';
+import ComponentPickerPlugin from 'tt-lexical/src/plugins/ComponentPickerPlugin';
+import ContextMenuPlugin from 'tt-lexical/src/plugins/ContextMenuPlugin';
+import DragDropPaste from 'tt-lexical/src/plugins/DragDropPastePlugin';
+import DraggableBlockPlugin from 'tt-lexical/src/plugins/DraggableBlockPlugin';
+import EmojiPickerPlugin from 'tt-lexical/src/plugins/EmojiPickerPlugin';
+import EmojisPlugin from 'tt-lexical/src/plugins/EmojisPlugin';
+import EquationsPlugin from 'tt-lexical/src/plugins/EquationsPlugin';
+import ExcalidrawPlugin from 'tt-lexical/src/plugins/ExcalidrawPlugin';
+import FigmaPlugin from 'tt-lexical/src/plugins/FigmaPlugin';
+import FloatingLinkEditorPlugin from 'tt-lexical/src/plugins/FloatingLinkEditorPlugin';
+import FloatingTextFormatToolbarPlugin from 'tt-lexical/src/plugins/FloatingTextFormatToolbarPlugin';
+import ImagesPlugin from 'tt-lexical/src/plugins/ImagesPlugin';
+import InlineImagePlugin from 'tt-lexical/src/plugins/InlineImagePlugin';
+import KeywordsPlugin from 'tt-lexical/src/plugins/KeywordsPlugin';
+import {LayoutPlugin} from 'tt-lexical/src/plugins/LayoutPlugin/LayoutPlugin';
+import LinkPlugin from 'tt-lexical/src/plugins/LinkPlugin';
+import ListMaxIndentLevelPlugin from 'tt-lexical/src/plugins/ListMaxIndentLevelPlugin';
+import MarkdownShortcutPlugin from 'tt-lexical/src/plugins/MarkdownShortcutPlugin';
+import {MaxLengthPlugin} from 'tt-lexical/src/plugins/MaxLengthPlugin';
+import MentionsPlugin from 'tt-lexical/src/plugins/MentionsPlugin';
+import PageBreakPlugin from 'tt-lexical/src/plugins/PageBreakPlugin';
+import PollPlugin from 'tt-lexical/src/plugins/PollPlugin';
+import SpeechToTextPlugin from 'tt-lexical/src/plugins/SpeechToTextPlugin';
+import TabFocusPlugin from 'tt-lexical/src/plugins/TabFocusPlugin';
+import TableCellActionMenuPlugin from 'tt-lexical/src/plugins/TableActionMenuPlugin';
+import TableCellResizer from 'tt-lexical/src/plugins/TableCellResizer';
+import TableOfContentsPlugin from 'tt-lexical/src/plugins/TableOfContentsPlugin';
+import ToolbarPlugin from 'tt-lexical/src/plugins/ToolbarPlugin';
+import TreeViewPlugin from 'tt-lexical/src/plugins/TreeViewPlugin';
+import TwitterPlugin from 'tt-lexical/src/plugins/TwitterPlugin';
+import YouTubePlugin from 'tt-lexical/src/plugins/YouTubePlugin';
+import ContentEditable from 'tt-lexical/src/ui/ContentEditable';
+import Placeholder from 'tt-lexical/src/ui/Placeholder';
 
 const skipCollaborationInit =
   // @ts-expect-error
   window.parent != null && window.parent.frames.right === window;
 
-export default function Editor(): JSX.Element {
-  const {historyState} = useSharedHistoryContext();
-  const {
-    settings: {
-      isCollab,
-      isAutocomplete,
-      isMaxLength,
-      isCharLimit,
-      isCharLimitUtf8,
-      isRichText,
-      showTreeView,
-      showTableOfContents,
-      shouldUseLexicalContextMenu,
-      tableCellMerge,
-      tableCellBackgroundColor,
-    },
-  } = useSettings();
+type EditorProps = {
+  isCollab: boolean;
+  isAutocomplete: boolean;
+  isMaxLength: boolean;
+  isCharLimit: boolean;
+  isCharLimitUtf8: boolean;
+  isRichText: boolean;
+  showTreeView: boolean;
+  showTableOfContents: boolean;
+  shouldUseLexicalContextMenu: boolean;
+  tableCellMerge: boolean;
+  tableCellBackgroundColor: boolean;
+  historyState: HistoryState | undefined;
+};
+
+export default function Editor({
+  isCollab,
+  isAutocomplete,
+  isMaxLength,
+  isCharLimit,
+  isCharLimitUtf8,
+  isRichText,
+  showTreeView,
+  showTableOfContents,
+  shouldUseLexicalContextMenu,
+  tableCellMerge,
+  tableCellBackgroundColor,
+  historyState,
+}: EditorProps): JSX.Element {
   const isEditable = useLexicalEditable();
   const text = isCollab
     ? 'Enter some collaborative rich text...'
