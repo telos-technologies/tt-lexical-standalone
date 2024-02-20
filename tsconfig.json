@@ -15,6 +15,7 @@
 
     "paths": {
       "lexical": ["./packages/lexical/src/"],
+      "tt-lexical-editor/Editor": ["/.packages/tt-lexical-editor/src/Editor.tsx"],
       "@lexical/clipboard": ["./packages/lexical-clipboard/src/"],
       "@lexical/list": ["./packages/lexical-list/src/"],
       "@lexical/table": ["./packages/lexical-table/src/"],
