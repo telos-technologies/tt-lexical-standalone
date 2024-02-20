@@ -119,6 +119,26 @@ function App(): JSX.Element {
   } = useSettings();
 
   return (
+    <LexicalEditor
+      {...{
+        editorState: prepopulatedRichText,
+        isAutocomplete,
+        isCharLimit,
+        isCharLimitUtf8,
+        isCollab,
+        isMaxLength,
+        isRichText,
+        measureTypingPerf,
+        shouldUseLexicalContextMenu,
+        showTableOfContents,
+        showTreeView,
+        tableCellBackgroundColor,
+        tableCellMerge,
+      }}
+    />
+  );
+
+  return (
     <div>
       <header>
         <a href="https://lexical.dev" target="_blank" rel="noreferrer">
@@ -148,6 +168,7 @@ function App(): JSX.Element {
 }
 
 export default function PlaygroundApp(): JSX.Element {
+  return <App />;
   return (
     <SettingsContext>
       <App />

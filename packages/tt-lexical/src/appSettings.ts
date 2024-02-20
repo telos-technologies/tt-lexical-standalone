@@ -22,9 +22,10 @@ export const DEFAULT_SETTINGS = {
   isRichText: true,
   measureTypingPerf: false,
   shouldUseLexicalContextMenu: false,
+  showActions: false,
   showNestedEditorTreeView: false,
   showTableOfContents: false,
-  showTreeView: true,
+  showTreeView: false,
   tableCellBackgroundColor: true,
   tableCellMerge: true,
 };

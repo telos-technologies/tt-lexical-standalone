@@ -6,6 +6,8 @@
  *
  */
 
+import 'lexical-playground/src/index.css';
+
 import {AutoFocusPlugin} from '@lexical/react/LexicalAutoFocusPlugin';
 import {CharacterLimitPlugin} from '@lexical/react/LexicalCharacterLimitPlugin';
 import {CheckListPlugin} from '@lexical/react/LexicalCheckListPlugin';
@@ -95,7 +97,7 @@ type EditorProps = {
   isCharLimit: boolean;
   isCharLimitUtf8: boolean;
   isRichText: boolean;
-  showTreeView: boolean;
+  showTreeView?: boolean;
   showTableOfContents: boolean;
   shouldUseLexicalContextMenu: boolean;
   tableCellMerge: boolean;
@@ -103,6 +105,7 @@ type EditorProps = {
   editorState?: InitialEditorStateType;
   isDevPlayground?: boolean;
   measureTypingPerf?: boolean;
+  showActions?: boolean;
 };
 
 function Editor({
@@ -112,11 +115,12 @@ function Editor({
   isCharLimit,
   isCharLimitUtf8,
   isRichText,
-  showTreeView,
+  showTreeView = false,
   showTableOfContents,
   shouldUseLexicalContextMenu,
   tableCellMerge,
   tableCellBackgroundColor,
+  showActions,
 }: EditorProps): JSX.Element {
   const {historyState} = useSharedHistoryContext();
 
@@ -266,7 +270,7 @@ function Editor({
         {isAutocomplete && <AutocompletePlugin />}
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         {shouldUseLexicalContextMenu && <ContextMenuPlugin />}
-        <ActionsPlugin isRichText={isRichText} />
+        {showActions && <ActionsPlugin isRichText={isRichText} />}
       </div>
       {showTreeView && <TreeViewPlugin />}
     </>
@@ -280,7 +284,7 @@ export const LexicalEditor = ({
   isCharLimit,
   isCharLimitUtf8,
   isRichText,
-  showTreeView,
+  showTreeView = false,
   showTableOfContents,
   shouldUseLexicalContextMenu,
   tableCellMerge,
@@ -288,6 +292,7 @@ export const LexicalEditor = ({
   editorState,
   isDevPlayground = false,
   measureTypingPerf,
+  showActions = false,
 }: EditorProps) => {
   const initialConfig = {
     editorState,
@@ -314,6 +319,7 @@ export const LexicalEditor = ({
                   isMaxLength,
                   isRichText,
                   shouldUseLexicalContextMenu,
+                  showActions,
                   showTableOfContents,
                   showTreeView,
                   tableCellBackgroundColor,
