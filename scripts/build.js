@@ -22,6 +22,9 @@ const alias = require('@rollup/plugin-alias');
 const compiler = require('@ampproject/rollup-plugin-closure-compiler');
 const {exec} = require('child-process-promise');
 const postcss = require('rollup-plugin-postcss');
+const url = require('postcss-url');
+const ignore = require('rollup-plugin-ignore');
+const copy = require('rollup-plugin-copy');
 
 const license = ` * Copyright (c) Meta Platforms, Inc. and affiliates.
  *
@@ -182,8 +185,28 @@ async function build(name, inputFile, outputPath, outputFile, isProd) {
       }
     },
     plugins: [
+      ignore(['katex/dist/katex.css']),
       postcss({
-        extensions: ['.css'], // You can add other extensions if needed
+        extensions: ['.css', '.scss'], // Add other extensions if needed.
+        extract: true, // Extract CSS to separate files.
+        minimize: isProduction, // Minimize CSS if in production mode.
+        // use: ['sass'], // Add preprocessors if needed.
+        plugins: [
+          url({
+            url: (asset, dir) => {
+              // Use a regex to transform the URL
+              return asset.url.replace(/(\.\.\/)+images/, 'images');
+            },
+          }),
+        ],
+      }),
+      copy({
+        targets: [
+          {
+            dest: 'packages/tt-lexical-editor/dist/images/',
+            src: 'packages/lexical-playground/src/images/*',
+          },
+        ],
       }),
       alias({
         entries: [
