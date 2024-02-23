@@ -11,25 +11,9 @@ export const isDevPlayground: boolean =
   hostName !== 'playground.lexical.dev' &&
   hostName !== 'lexical-playground.vercel.app';
 
-type DEFAULT_SETTINGS_TYPE = {
-  disableBeforeInput?: boolean;
-  isAutocomplete?: boolean;
-  isCharLimit?: boolean;
-  isCharLimitUtf8?: boolean;
-  isCollab?: boolean;
-  isMaxLength?: boolean;
-  isRichText?: boolean;
-  measureTypingPerf?: boolean;
-  shouldUseLexicalContextMenu?: boolean;
-  showNestedEditorTreeView?: boolean;
-  showTableOfContents?: boolean;
-  showTreeView?: boolean;
-  tableCellBackgroundColor?: boolean;
-  tableCellMerge?: boolean;
-};
-
-export const DEFAULT_SETTINGS: DEFAULT_SETTINGS_TYPE = {
+export const DEFAULT_SETTINGS = {
   disableBeforeInput: false,
+  emptyEditor: isDevPlayground,
   isAutocomplete: false,
   isCharLimit: false,
   isCharLimitUtf8: false,
@@ -45,6 +29,6 @@ export const DEFAULT_SETTINGS: DEFAULT_SETTINGS_TYPE = {
   tableCellMerge: true,
 };
 
-export type SettingName = keyof DEFAULT_SETTINGS_TYPE;
+export type SettingName = keyof typeof DEFAULT_SETTINGS;
 
-export type Settings = DEFAULT_SETTINGS_TYPE;
+export type Settings = typeof DEFAULT_SETTINGS;

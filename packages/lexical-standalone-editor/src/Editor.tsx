@@ -91,10 +91,10 @@ const skipCollaborationInit =
   // @ts-expect-error
   window.parent != null && window.parent.frames.right === window;
 
-type EditorProps = Settings & {
+type NormalizedEditorProps = Omit<Settings, 'measureTypingPerf'>;
+
+type EditorProps = NormalizedEditorProps & {
   showActions?: boolean;
-  editorState?: InitialEditorStateType;
-  isDevPlayground?: boolean;
 };
 
 function Editor({
@@ -266,26 +266,23 @@ function Editor({
   );
 }
 
+type LexicalEditorProps = EditorProps & {
+  isDevPlayground?: boolean;
+  measureTypingPerf?: boolean;
+  editorState?: InitialEditorStateType;
+  namespace?: string;
+};
+
 export const LexicalEditor = ({
-  isCollab,
-  isAutocomplete,
-  isMaxLength,
-  isCharLimit,
-  isCharLimitUtf8,
-  isRichText,
-  showTreeView,
-  showTableOfContents,
-  shouldUseLexicalContextMenu,
-  tableCellMerge,
-  tableCellBackgroundColor,
-  editorState,
   isDevPlayground,
   measureTypingPerf,
-  showActions,
-}: EditorProps) => {
+  editorState,
+  namespace,
+  ...restProps
+}: LexicalEditorProps) => {
   const initialConfig = {
     editorState,
-    namespace: 'Playground',
+    namespace: namespace || 'lexical-editor',
     nodes: [...PlaygroundNodes],
     onError: (error: Error) => {
       throw error;
@@ -299,22 +296,7 @@ export const LexicalEditor = ({
         <TableContext>
           <SharedAutocompleteContext>
             <div className="editor-shell">
-              <Editor
-                {...{
-                  isAutocomplete,
-                  isCharLimit,
-                  isCharLimitUtf8,
-                  isCollab,
-                  isMaxLength,
-                  isRichText,
-                  shouldUseLexicalContextMenu,
-                  showActions,
-                  showTableOfContents,
-                  showTreeView,
-                  tableCellBackgroundColor,
-                  tableCellMerge,
-                }}
-              />
+              <Editor {...restProps} />
             </div>
           </SharedAutocompleteContext>
         </TableContext>

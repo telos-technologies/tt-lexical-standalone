@@ -36,7 +36,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
 import useModal from '../../hooks/useModal';
-// import catTypingGif from '../../images/cat-typing.gif';
+import catTypingGif from '../../images/cat-typing.gif';
 import {EmbedConfigs} from '../AutoEmbedPlugin';
 import {INSERT_COLLAPSIBLE_COMMAND} from '../CollapsiblePlugin';
 import {InsertEquationDialog} from '../EquationsPlugin';
@@ -276,7 +276,7 @@ function getBaseOptions(editor: LexicalEditor, showModal: ShowModal) {
       onSelect: () =>
         editor.dispatchCommand(INSERT_IMAGE_COMMAND, {
           altText: 'Cat typing on a laptop',
-          src: '',
+          src: catTypingGif,
         }),
     }),
     new ComponentPickerOption('Image', {

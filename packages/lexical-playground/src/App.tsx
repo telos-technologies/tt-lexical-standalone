@@ -32,7 +32,7 @@ console.warn(
   'If you are profiling the playground app, please ensure you turn off the debug view. You can disable it by pressing on the settings control in the bottom-left of your screen and toggling the debug view setting.',
 );
 
-function prepopulatedRichText() {
+export function prepopulatedRichText() {
   const root = $getRoot();
   if (root.getFirstChild() === null) {
     const heading = $createHeadingNode('h1');

@@ -6,7 +6,7 @@
  *
  */
 
-import type {SettingName, Settings} from '../appSettings';
+import type {SettingName} from '../appSettings';
 
 import * as React from 'react';
 import {
@@ -22,7 +22,7 @@ import {DEFAULT_SETTINGS} from '../appSettings';
 
 type SettingsContextShape = {
   setOption: (name: SettingName, value: boolean) => void;
-  settings: Settings;
+  settings: Record<SettingName, boolean>;
 };
 
 const Context: React.Context<SettingsContextShape> = createContext({
