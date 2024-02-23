@@ -9,12 +9,14 @@ import {$createLinkNode} from '@lexical/link';
 import {$createListItemNode, $createListNode} from '@lexical/list';
 import {$createHeadingNode, $createQuoteNode} from '@lexical/rich-text';
 import {$createParagraphNode, $createTextNode, $getRoot} from 'lexical';
+import {
+  SettingsContext,
+  useSettings,
+} from 'lexical-playground/src/context/SettingsContext';
+import logo from 'lexical-playground/src/images/logo.svg';
+import Settings from 'lexical-playground/src/Settings';
+import {LexicalEditor} from 'lexical-standalone-editor/src/Editor';
 import * as React from 'react';
-import {LexicalEditor} from 'tt-lexical-editor/src/Editor';
-
-import {SettingsContext, useSettings} from './context/SettingsContext';
-import logo from './images/logo.svg';
-import Settings from './Settings';
 
 console.warn(
   'If you are profiling the playground app, please ensure you turn off the debug view. You can disable it by pressing on the settings control in the bottom-left of your screen and toggling the debug view setting.',
@@ -101,42 +103,7 @@ function prepopulatedRichText() {
 }
 
 function App(): JSX.Element {
-  const {
-    settings: {
-      isCollab,
-      measureTypingPerf,
-      isAutocomplete,
-      isMaxLength,
-      isCharLimit,
-      isCharLimitUtf8,
-      isRichText,
-      showTreeView,
-      showTableOfContents,
-      shouldUseLexicalContextMenu,
-      tableCellMerge,
-      tableCellBackgroundColor,
-    },
-  } = useSettings();
-
-  return (
-    <LexicalEditor
-      {...{
-        editorState: prepopulatedRichText,
-        isAutocomplete,
-        isCharLimit,
-        isCharLimitUtf8,
-        isCollab,
-        isMaxLength,
-        isRichText,
-        measureTypingPerf,
-        shouldUseLexicalContextMenu,
-        showTableOfContents,
-        showTreeView,
-        tableCellBackgroundColor,
-        tableCellMerge,
-      }}
-    />
-  );
+  const {settings} = useSettings();
 
   return (
     <div>
@@ -148,18 +115,7 @@ function App(): JSX.Element {
       <LexicalEditor
         {...{
           editorState: prepopulatedRichText,
-          isAutocomplete,
-          isCharLimit,
-          isCharLimitUtf8,
-          isCollab,
-          isMaxLength,
-          isRichText,
-          measureTypingPerf,
-          shouldUseLexicalContextMenu,
-          showTableOfContents,
-          showTreeView,
-          tableCellBackgroundColor,
-          tableCellMerge,
+          ...settings,
         }}
       />
       <Settings />
@@ -168,7 +124,6 @@ function App(): JSX.Element {
 }
 
 export default function PlaygroundApp(): JSX.Element {
-  return <App />;
   return (
     <SettingsContext>
       <App />

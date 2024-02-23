@@ -15,7 +15,7 @@ export default function Switch({
   text,
   id,
 }: Readonly<{
-  checked: boolean;
+  checked?: boolean;
   id?: string;
   onClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   text: string;

@@ -203,7 +203,7 @@ async function build(name, inputFile, outputPath, outputFile, isProd) {
       copy({
         targets: [
           {
-            dest: 'packages/tt-lexical-editor/dist/images/',
+            dest: 'packages/lexical-standalone-editor/dist/images/',
             src: 'packages/lexical-playground/src/images/*',
           },
         ],
@@ -583,14 +583,14 @@ const packages = [
     modules: [
       {
         name: 'Editor',
-        outputPath: './packages/tt-lexical-editor/dist/',
+        outputPath: './packages/lexical-standalone-editor/dist/',
         sourceFileName: 'Editor.tsx',
       },
     ],
     name: 'TT Lexical Editor',
-    outputPath: './packages/tt-lexical-editor/dist/',
-    packageName: 'tt-lexical-editor',
-    sourcePath: './packages/tt-lexical-editor/src/',
+    outputPath: './packages/lexical-standalone-editor/dist/',
+    packageName: 'lexical-standalone-editor',
+    sourcePath: './packages/lexical-standalone-editor/src/',
   },
   {
     modules: lexicalReactModules

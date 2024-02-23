@@ -1,6 +1,14 @@
 {
-  "name": "tt-lexical-editor",
+  "name": "lexical-standalone-playground",
   "version": "0.13.1",
+  "private": true,
+  "scripts": {
+    "dev": "vite --host",
+    "build-dev": "vite build",
+    "build-prod": "vite build --config vite.prod.config.js",
+    "build-vercel": "(cd ../../ && node ./scripts/build.js --prod) && npm run build-prod",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@excalidraw/excalidraw": "^0.17.0",
     "@lexical/clipboard": "0.13.1",
@@ -32,10 +40,5 @@
     "@vitejs/plugin-react": "^1.0.7",
     "vite": "^2.9.16",
     "vite-plugin-replace": "0.1.1"
-  },
-  "peerDependencies": {
-    "lexical": "0.13.1",
-    "react": ">=17.x",
-    "react-dom": ">=17.x"
   }
 }

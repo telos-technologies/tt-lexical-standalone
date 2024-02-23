@@ -28,6 +28,7 @@ import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
 import useLexicalEditable from '@lexical/react/useLexicalEditable';
+import {Settings} from 'lexical-playground/src/appSettings';
 import {createWebsocketProvider} from 'lexical-playground/src/collaboration';
 import {SharedAutocompleteContext} from 'lexical-playground/src/context/SharedAutocompleteContext';
 import {
@@ -90,22 +91,10 @@ const skipCollaborationInit =
   // @ts-expect-error
   window.parent != null && window.parent.frames.right === window;
 
-type EditorProps = {
-  isCollab: boolean;
-  isAutocomplete: boolean;
-  isMaxLength: boolean;
-  isCharLimit: boolean;
-  isCharLimitUtf8: boolean;
-  isRichText: boolean;
-  showTreeView?: boolean;
-  showTableOfContents: boolean;
-  shouldUseLexicalContextMenu: boolean;
-  tableCellMerge: boolean;
-  tableCellBackgroundColor: boolean;
+type EditorProps = Settings & {
+  showActions?: boolean;
   editorState?: InitialEditorStateType;
   isDevPlayground?: boolean;
-  measureTypingPerf?: boolean;
-  showActions?: boolean;
 };
 
 function Editor({
@@ -270,7 +259,7 @@ function Editor({
         {isAutocomplete && <AutocompletePlugin />}
         <div>{showTableOfContents && <TableOfContentsPlugin />}</div>
         {shouldUseLexicalContextMenu && <ContextMenuPlugin />}
-        {showActions && <ActionsPlugin isRichText={isRichText} />}
+        {showActions && <ActionsPlugin isRichText={isRichText || true} />}
       </div>
       {showTreeView && <TreeViewPlugin />}
     </>
@@ -284,15 +273,15 @@ export const LexicalEditor = ({
   isCharLimit,
   isCharLimitUtf8,
   isRichText,
-  showTreeView = false,
+  showTreeView,
   showTableOfContents,
   shouldUseLexicalContextMenu,
   tableCellMerge,
   tableCellBackgroundColor,
   editorState,
-  isDevPlayground = false,
+  isDevPlayground,
   measureTypingPerf,
-  showActions = false,
+  showActions,
 }: EditorProps) => {
   const initialConfig = {
     editorState,
