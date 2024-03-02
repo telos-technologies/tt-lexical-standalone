@@ -587,7 +587,7 @@ const packages = [
         sourceFileName: 'Editor.tsx',
       },
     ],
-    name: 'TT Lexical Editor',
+    name: 'Lexical Standalone Editor',
     outputPath: './packages/lexical-standalone-editor/dist/',
     packageName: 'lexical-standalone-editor',
     sourcePath: './packages/lexical-standalone-editor/src/',

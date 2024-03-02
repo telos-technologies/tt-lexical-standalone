@@ -9,7 +9,6 @@
 import type {Klass, LexicalNode} from 'lexical';
 
 import {CodeHighlightNode, CodeNode} from '@lexical/code';
-import {HashtagNode} from '@lexical/hashtag';
 import {AutoLinkNode, LinkNode} from '@lexical/link';
 import {ListItemNode, ListNode} from '@lexical/list';
 import {MarkNode} from '@lexical/mark';
@@ -24,16 +23,11 @@ import {CollapsibleTitleNode} from '../plugins/CollapsiblePlugin/CollapsibleTitl
 import {AutocompleteNode} from './AutocompleteNode';
 import {EmojiNode} from './EmojiNode';
 import {EquationNode} from './EquationNode';
-import {ExcalidrawNode} from './ExcalidrawNode';
-import {FigmaNode} from './FigmaNode';
 import {ImageNode} from './ImageNode';
 import {InlineImageNode} from './InlineImageNode';
-import {KeywordNode} from './KeywordNode';
 import {LayoutContainerNode} from './LayoutContainerNode';
 import {LayoutItemNode} from './LayoutItemNode';
-import {MentionNode} from './MentionNode';
 import {PageBreakNode} from './PageBreakNode';
-import {PollNode} from './PollNode';
 import {StickyNode} from './StickyNode';
 import {TweetNode} from './TweetNode';
 import {YouTubeNode} from './YouTubeNode';
@@ -47,25 +41,19 @@ const PlaygroundNodes: Array<Klass<LexicalNode>> = [
   TableNode,
   TableCellNode,
   TableRowNode,
-  HashtagNode,
   CodeHighlightNode,
   AutoLinkNode,
   LinkNode,
   OverflowNode,
-  PollNode,
   StickyNode,
   ImageNode,
   InlineImageNode,
-  MentionNode,
   EmojiNode,
-  ExcalidrawNode,
   EquationNode,
   AutocompleteNode,
-  KeywordNode,
   HorizontalRuleNode,
   TweetNode,
   YouTubeNode,
-  FigmaNode,
   MarkNode,
   CollapsibleContainerNode,
   CollapsibleContentNode,

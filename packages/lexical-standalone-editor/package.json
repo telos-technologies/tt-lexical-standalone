@@ -2,7 +2,6 @@
   "name": "lexical-standalone-editor",
   "version": "0.13.1",
   "dependencies": {
-    "@excalidraw/excalidraw": "^0.17.0",
     "@lexical/clipboard": "0.13.1",
     "@lexical/code": "0.13.1",
     "@lexical/file": "0.13.1",

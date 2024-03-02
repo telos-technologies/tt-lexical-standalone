@@ -13,13 +13,11 @@ import {CharacterLimitPlugin} from '@lexical/react/LexicalCharacterLimitPlugin';
 import {CheckListPlugin} from '@lexical/react/LexicalCheckListPlugin';
 import {ClearEditorPlugin} from '@lexical/react/LexicalClearEditorPlugin';
 import LexicalClickableLinkPlugin from '@lexical/react/LexicalClickableLinkPlugin';
-import {CollaborationPlugin} from '@lexical/react/LexicalCollaborationPlugin';
 import {
   InitialEditorStateType,
   LexicalComposer,
 } from '@lexical/react/LexicalComposer';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
-import {HashtagPlugin} from '@lexical/react/LexicalHashtagPlugin';
 import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {HorizontalRulePlugin} from '@lexical/react/LexicalHorizontalRulePlugin';
 import {ListPlugin} from '@lexical/react/LexicalListPlugin';
@@ -28,8 +26,8 @@ import {RichTextPlugin} from '@lexical/react/LexicalRichTextPlugin';
 import {TabIndentationPlugin} from '@lexical/react/LexicalTabIndentationPlugin';
 import {TablePlugin} from '@lexical/react/LexicalTablePlugin';
 import useLexicalEditable from '@lexical/react/useLexicalEditable';
+import {KlassConstructor, LexicalNode} from 'lexical/src';
 import {Settings} from 'lexical-playground/src/appSettings';
-import {createWebsocketProvider} from 'lexical-playground/src/collaboration';
 import {SharedAutocompleteContext} from 'lexical-playground/src/context/SharedAutocompleteContext';
 import {
   SharedHistoryContext,
@@ -43,7 +41,6 @@ import AutoLinkPlugin from 'lexical-playground/src/plugins/AutoLinkPlugin';
 import CodeActionMenuPlugin from 'lexical-playground/src/plugins/CodeActionMenuPlugin';
 import CodeHighlightPlugin from 'lexical-playground/src/plugins/CodeHighlightPlugin';
 import CollapsiblePlugin from 'lexical-playground/src/plugins/CollapsiblePlugin';
-import CommentPlugin from 'lexical-playground/src/plugins/CommentPlugin';
 import ComponentPickerPlugin from 'lexical-playground/src/plugins/ComponentPickerPlugin';
 import ContextMenuPlugin from 'lexical-playground/src/plugins/ContextMenuPlugin';
 import DocsPlugin from 'lexical-playground/src/plugins/DocsPlugin';
@@ -52,22 +49,17 @@ import DraggableBlockPlugin from 'lexical-playground/src/plugins/DraggableBlockP
 import EmojiPickerPlugin from 'lexical-playground/src/plugins/EmojiPickerPlugin';
 import EmojisPlugin from 'lexical-playground/src/plugins/EmojisPlugin';
 import EquationsPlugin from 'lexical-playground/src/plugins/EquationsPlugin';
-import ExcalidrawPlugin from 'lexical-playground/src/plugins/ExcalidrawPlugin';
-import FigmaPlugin from 'lexical-playground/src/plugins/FigmaPlugin';
 import FloatingLinkEditorPlugin from 'lexical-playground/src/plugins/FloatingLinkEditorPlugin';
 import FloatingTextFormatToolbarPlugin from 'lexical-playground/src/plugins/FloatingTextFormatToolbarPlugin';
 import ImagesPlugin from 'lexical-playground/src/plugins/ImagesPlugin';
 import InlineImagePlugin from 'lexical-playground/src/plugins/InlineImagePlugin';
-import KeywordsPlugin from 'lexical-playground/src/plugins/KeywordsPlugin';
 import {LayoutPlugin} from 'lexical-playground/src/plugins/LayoutPlugin/LayoutPlugin';
 import LinkPlugin from 'lexical-playground/src/plugins/LinkPlugin';
 import ListMaxIndentLevelPlugin from 'lexical-playground/src/plugins/ListMaxIndentLevelPlugin';
 import MarkdownShortcutPlugin from 'lexical-playground/src/plugins/MarkdownShortcutPlugin';
 import {MaxLengthPlugin} from 'lexical-playground/src/plugins/MaxLengthPlugin';
-import MentionsPlugin from 'lexical-playground/src/plugins/MentionsPlugin';
 import PageBreakPlugin from 'lexical-playground/src/plugins/PageBreakPlugin';
 import PasteLogPlugin from 'lexical-playground/src/plugins/PasteLogPlugin';
-import PollPlugin from 'lexical-playground/src/plugins/PollPlugin';
 import SpeechToTextPlugin from 'lexical-playground/src/plugins/SpeechToTextPlugin';
 import TabFocusPlugin from 'lexical-playground/src/plugins/TabFocusPlugin';
 import TableCellActionMenuPlugin from 'lexical-playground/src/plugins/TableActionMenuPlugin';
@@ -87,18 +79,14 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {CAN_USE_DOM} from 'shared/canUseDOM';
 
-const skipCollaborationInit =
-  // @ts-expect-error
-  window.parent != null && window.parent.frames.right === window;
-
 type NormalizedEditorProps = Omit<Settings, 'measureTypingPerf'>;
 
 type EditorProps = NormalizedEditorProps & {
   showActions?: boolean;
+  showToolbar?: boolean;
 };
 
 function Editor({
-  isCollab,
   isAutocomplete,
   isMaxLength,
   isCharLimit,
@@ -110,15 +98,13 @@ function Editor({
   tableCellMerge,
   tableCellBackgroundColor,
   showActions,
+  showToolbar = true,
 }: EditorProps): JSX.Element {
   const {historyState} = useSharedHistoryContext();
 
   const isEditable = useLexicalEditable();
-  const text = isCollab
-    ? 'Enter some collaborative rich text...'
-    : isRichText
-    ? 'Enter some rich text...'
-    : 'Enter some plain text...';
+  const text = isRichText || 'Enter some rich text...';
+
   const placeholder = <Placeholder>{text}</Placeholder>;
   const [floatingAnchorElem, setFloatingAnchorElem] =
     useState<HTMLDivElement | null>(null);
@@ -151,7 +137,9 @@ function Editor({
 
   return (
     <>
-      {isRichText && <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />}
+      {isRichText && showToolbar && (
+        <ToolbarPlugin setIsLinkEditMode={setIsLinkEditMode} />
+      )}
       <div
         className={`editor-container ${showTreeView ? 'tree-view' : ''} ${
           !isRichText ? 'plain-text' : ''
@@ -163,27 +151,12 @@ function Editor({
         <ComponentPickerPlugin />
         <EmojiPickerPlugin />
         <AutoEmbedPlugin />
-
-        <MentionsPlugin />
         <EmojisPlugin />
-        <HashtagPlugin />
-        <KeywordsPlugin />
         <SpeechToTextPlugin />
         <AutoLinkPlugin />
-        <CommentPlugin
-          providerFactory={isCollab ? createWebsocketProvider : undefined}
-        />
         {isRichText ? (
           <>
-            {isCollab ? (
-              <CollaborationPlugin
-                id="main"
-                providerFactory={createWebsocketProvider}
-                shouldBootstrap={!skipCollaborationInit}
-              />
-            ) : (
-              <HistoryPlugin externalHistoryState={historyState} />
-            )}
+            <HistoryPlugin externalHistoryState={historyState} />
             <RichTextPlugin
               contentEditable={
                 <div className="editor-scroller">
@@ -208,14 +181,11 @@ function Editor({
             <ImagesPlugin />
             <InlineImagePlugin />
             <LinkPlugin />
-            <PollPlugin />
             <TwitterPlugin />
             <YouTubePlugin />
-            <FigmaPlugin />
             {!isEditable && <LexicalClickableLinkPlugin />}
             <HorizontalRulePlugin />
             <EquationsPlugin />
-            <ExcalidrawPlugin />
             <TabFocusPlugin />
             <TabIndentationPlugin />
             <CollapsiblePlugin />
@@ -271,6 +241,8 @@ type LexicalEditorProps = EditorProps & {
   measureTypingPerf?: boolean;
   editorState?: InitialEditorStateType;
   namespace?: string;
+  customNodes?: KlassConstructor<typeof LexicalNode>[];
+  customPlugins?: JSX.Element[];
 };
 
 export const LexicalEditor = ({
@@ -278,12 +250,17 @@ export const LexicalEditor = ({
   measureTypingPerf,
   editorState,
   namespace,
+  customNodes,
+  customPlugins,
   ...restProps
 }: LexicalEditorProps) => {
   const initialConfig = {
     editorState,
     namespace: namespace || 'lexical-editor',
-    nodes: [...PlaygroundNodes],
+    nodes:
+      customNodes && customNodes.length > 0
+        ? [...PlaygroundNodes, ...customNodes]
+        : [...PlaygroundNodes],
     onError: (error: Error) => {
       throw error;
     },
@@ -305,6 +282,9 @@ export const LexicalEditor = ({
       {isDevPlayground ? <PasteLogPlugin /> : null}
       {isDevPlayground ? <TestRecorderPlugin /> : null}
       {measureTypingPerf ? <TypingPerfPlugin /> : null}
+      {customPlugins &&
+        customPlugins.length > 0 &&
+        customPlugins.map((CustomPlugin) => CustomPlugin)}
     </LexicalComposer>
   );
 };
