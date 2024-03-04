@@ -36,3 +36,5 @@ npm-debug.log*
 .idea/**/shelf
 
 .idea
+
+!packages/lexical-standalone-editor/dist
