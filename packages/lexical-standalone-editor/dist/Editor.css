@@ -6,44 +6,6 @@
  *
  *
  */
-.StickyNode__contentEditable {
-  min-height: 20px;
-  border: 0;
-  resize: none;
-  cursor: text;
-  font-size: 24px;
-  caret-color: rgb(5, 5, 5);
-  display: block;
-  position: relative;
-  outline: 0;
-  padding: 10px;
-  user-select: text;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-}
-.StickyNode__placeholder {
-  font-size: 24px;
-  color: #999;
-  overflow: hidden;
-  position: absolute;
-  text-overflow: ellipsis;
-  top: 30px;
-  left: 20px;
-  width: 120px;
-  user-select: none;
-  white-space: nowrap;
-  display: inline-block;
-  pointer-events: none;
-}
-
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- *
- */
 
 .ImageNode__contentEditable {
   min-height: 20px;
@@ -88,10 +50,34 @@
  *
  *
  */
-
-.StickyEditorTheme__paragraph {
-  margin: 0;
-  position: 'relative';
+.StickyNode__contentEditable {
+  min-height: 20px;
+  border: 0;
+  resize: none;
+  cursor: text;
+  font-size: 24px;
+  caret-color: rgb(5, 5, 5);
+  display: block;
+  position: relative;
+  outline: 0;
+  padding: 10px;
+  user-select: text;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.StickyNode__placeholder {
+  font-size: 24px;
+  color: #999;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  top: 30px;
+  left: 20px;
+  width: 120px;
+  user-select: none;
+  white-space: nowrap;
+  display: inline-block;
+  pointer-events: none;
 }
 
 /**
@@ -139,19 +125,23 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  *
+ *
+ */
+
+.StickyEditorTheme__paragraph {
+  margin: 0;
+  position: 'relative';
+}
+
+/**
+ * Copyright (c) Meta Platforms, Inc. and affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ *
  */
 
 @import 'https://fonts.googleapis.com/css?family=Reenie+Beanie';
-
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #eee;
-  padding: 0 20px;
-}
 
 header {
   max-width: 580px;
