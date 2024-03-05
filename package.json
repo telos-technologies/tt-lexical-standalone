@@ -1,0 +1,20 @@
+{
+    "name": "tt-lexical-standalone",
+    "version": "1.0.1",
+    "description": "Telos Media Default Text Editor which is based on the Lexical Playground Editor",
+    "main": "packages/lexical-standalone-editor/dist/Editor.js",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/telos-technologies/tt-lexical-standalone.git"
+    },
+    "author": "Said Akhmedbayev",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/telos-technologies/tt-lexical-standalone/issues"
+    },
+    "homepage": "https://github.com/telos-technologies/tt-lexical-standalone#readme"
+  }
+  
